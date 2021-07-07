@@ -1,2 +1,2 @@
 # Engage
-Engage is microbloggin social media platform. 
+Engage is microblogging social media platform. 
