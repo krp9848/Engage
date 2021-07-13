@@ -30,7 +30,7 @@ usersRouter.post('/', async (request, response) => {
   if (body.password && body.password.length < 5) {
     return response
       .status(400)
-      .json({ error: `Please provide password of length 5 or more` })
+      .json({ error: 'Please provide password of length 5 or more' })
   }
 
   const saltRounds = 10
