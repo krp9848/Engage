@@ -26,8 +26,10 @@ usersRouter.get('/:id', async (request, response) => {
 // Create a user
 usersRouter.post('/', async (request, response) => {
   const body = request.body
-
-  if (body.password && body.password.length < 5) {
+  if (!body.password) {
+    return response.status(400).json({ error: 'Password required' })
+  }
+  if (body.password.length < 5) {
     return response
       .status(400)
       .json({ error: 'Please provide password of length 5 or more' })
