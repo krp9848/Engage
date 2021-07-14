@@ -4,13 +4,13 @@ const initialUsers = [
   {
     name: 'kabiraj',
     username: 'kabi_pant',
-    password: 'kaviraj',
+    password: 'kabiraj',
   },
 
   {
-    name: 'rituraj',
-    username: 'ritu_pant',
-    password: 'rituraj',
+    name: 'kabirajtest',
+    username: 'kabi_pant_test',
+    password: 'kabiraj',
   },
 ]
 

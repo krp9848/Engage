@@ -81,6 +81,25 @@ describe('creation of a new user', () => {
     expect(usernames).toContain('some_username')
   })
 
+  test('fails with status code 400 and appropriate message if username is not unique', async () => {
+    const newUser = {
+      name: 'somename',
+      password: 'some_password',
+      username: 'kabi_pant',
+    }
+    const response = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-type', /application\/json/)
+
+    const usersAtEnd = await helper.usersInDb()
+
+    expect(usersAtEnd).toHaveLength(helper.initialUsers.length)
+
+    expect(response.body.error).toContain('`username` to be unique')
+  })
+
   test('fails with status code 400 and appropriate error message if name is missing', async () => {
     const newUser = {
       password: 'some_password',
