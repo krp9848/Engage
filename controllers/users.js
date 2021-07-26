@@ -53,15 +53,33 @@ usersRouter.post('/', async (request, response) => {
   response.json(savedUser)
 })
 
+// Update the particular user (only description update is allowed from here)
+usersRouter.patch('/:id', getUserFrom, async (request, response) => {
+  const user = request.user
+
+  const { description } = request.body
+  if (!description) {
+    return response
+      .status(400)
+      .json({ error: 'Description field text not found' })
+  }
+
+  user.description = description
+
+  await user.save()
+
+  response.json(user)
+})
+
 // Delete a particular user
 usersRouter.delete('/:id', async (request, response) => {
+  // add the additional check whether the request was made by the same user
   await User.findByIdAndRemove(request.params.id)
 
   response.status(204).end()
 })
 
 // Get the followers of a particular user
-
 usersRouter.get('/:id/followers', async (request, response) => {
   const user = await User.findById(request.params.id).populate('followers', {
     username: 1,
@@ -77,7 +95,6 @@ usersRouter.get('/:id/followers', async (request, response) => {
 })
 
 // Get the people followed by the particular user
-
 usersRouter.get('/:id/following', async (request, response) => {
   const user = await User.findById(request.params.id).populate('following', {
     username: 1,
@@ -92,8 +109,7 @@ usersRouter.get('/:id/following', async (request, response) => {
   response.json(user)
 })
 
-// Follow/Unfollow request route
-
+// Follow request route
 usersRouter.post('/:id/follow', getUserFrom, async (request, response) => {
   // Get the identity of the user making the request(request.user)
   const user = request.user
@@ -126,6 +142,7 @@ usersRouter.post('/:id/follow', getUserFrom, async (request, response) => {
   response.json(user)
 })
 
+// To make the unfollow request
 usersRouter.post('/:id/unfollow', getUserFrom, async (request, response) => {
   // Get the identity of the user making the request(request.user)
   const user = request.user

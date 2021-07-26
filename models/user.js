@@ -5,11 +5,13 @@ const userSchema = new mongoose.Schema({
     type: String,
     minlength: 5,
     required: true,
+    immutable: true,
     unique: true,
   },
   name: {
     type: String,
     required: true,
+    immutable: true,
   },
   password: {
     type: String,

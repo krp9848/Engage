@@ -28,12 +28,6 @@ tweetsRouter.get('/:id', async (request, response) => {
 // Create a new tweet
 tweetsRouter.post('/', getUserFrom, async (request, response) => {
   const body = request.body
-  // const token = getTokenFrom(request)
-  // const decodedToken = jwt.verify(token, process.env.SECRET)
-  // if (!token || !decodedToken.id) {
-  //   return response.status(401).json({ error: 'token missing or invalid' })
-  // }
-
   const user = request.user
   console.log(user)
   const newTweet = new Tweet({
