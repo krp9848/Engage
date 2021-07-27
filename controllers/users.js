@@ -5,7 +5,7 @@ const getUserFrom = require('../utils/middleware').getUserFrom
 
 // Get all the users
 usersRouter.get('/', async (request, response) => {
-  const users = await User.find({}).populate('tweets', { text: 1 })
+  const users = await User.find({}).populate('tweets')
 
   response.json(users)
 })
@@ -13,9 +13,7 @@ usersRouter.get('/', async (request, response) => {
 // Get a particular user
 usersRouter.get('/:id', async (request, response) => {
   const user = await User.findById(request.params.id)
-    .populate('tweets', {
-      text: 1,
-    })
+    .populate('tweets')
     .populate('following', { username: 1 })
     .populate('followers', { username: 1 })
 

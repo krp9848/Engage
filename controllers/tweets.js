@@ -46,7 +46,10 @@ tweetsRouter.post('/', getUserFrom, async (request, response) => {
 
 tweetsRouter.post('/:id/like', getUserFrom, async (request, response) => {
   const user = request.user
-  const tweet = await Tweet.findById(request.params.id)
+  const tweet = await Tweet.findById(request.params.id).populate('user', {
+    username: 1,
+    name: 1,
+  })
 
   // if tweet id was invalid, send an appropriate response
   if (!tweet) {
@@ -77,7 +80,10 @@ tweetsRouter.post('/:id/like', getUserFrom, async (request, response) => {
 // Retweet a tweet
 tweetsRouter.post('/:id/retweet', getUserFrom, async (request, response) => {
   const user = request.user
-  const tweet = await Tweet.findById(request.params.id)
+  const tweet = await Tweet.findById(request.params.id).populate('user', {
+    username: 1,
+    name: 1,
+  })
 
   // if tweet id was invalid, send an appropriate response
   if (!tweet) {
