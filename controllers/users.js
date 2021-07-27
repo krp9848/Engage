@@ -54,22 +54,26 @@ usersRouter.post('/', async (request, response) => {
 })
 
 // Update the particular user (only description update is allowed from here)
-usersRouter.patch('/:id', getUserFrom, async (request, response) => {
-  const user = request.user
+usersRouter.patch(
+  '/:id/description',
+  getUserFrom,
+  async (request, response) => {
+    const user = request.user
 
-  const { description } = request.body
-  if (!description) {
-    return response
-      .status(400)
-      .json({ error: 'Description field text not found' })
+    const { description } = request.body
+    if (!description) {
+      return response
+        .status(400)
+        .json({ error: 'Description field text not found' })
+    }
+
+    user.description = description
+
+    await user.save()
+
+    response.json(user)
   }
-
-  user.description = description
-
-  await user.save()
-
-  response.json(user)
-})
+)
 
 // Delete a particular user
 usersRouter.delete('/:id', async (request, response) => {

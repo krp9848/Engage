@@ -42,4 +42,67 @@ tweetsRouter.post('/', getUserFrom, async (request, response) => {
   response.json(savedTweet)
 })
 
+// Like a tweet
+
+tweetsRouter.post('/:id/like', getUserFrom, async (request, response) => {
+  const user = request.user
+  const tweet = await Tweet.findById(request.params.id)
+
+  // if tweet id was invalid, send an appropriate response
+  if (!tweet) {
+    return response
+      .status(404)
+      .json({ error: `No tweet with tweet id ${request.params.id} found` })
+  }
+
+  // check if the tweet was already liked by the user
+  const isAlreadyLiked = tweet.likes.find(
+    (liker) => liker.toString() === user._id.toString()
+  )
+
+  // if already liked, operation was suppose to be unlike, perform unlike, else perform like
+  if (isAlreadyLiked) {
+    tweet.likes = tweet.likes.filter(
+      (liker) => liker.toString() !== user._id.toString()
+    )
+  } else {
+    tweet.likes = tweet.likes.concat(user._id)
+  }
+
+  await tweet.save()
+
+  response.json(tweet)
+})
+
+// Retweet a tweet
+tweetsRouter.post('/:id/retweet', getUserFrom, async (request, response) => {
+  const user = request.user
+  const tweet = await Tweet.findById(request.params.id)
+
+  // if tweet id was invalid, send an appropriate response
+  if (!tweet) {
+    return response
+      .status(404)
+      .json({ error: `No tweet with tweet id ${request.params.id} found` })
+  }
+
+  // check if the tweet was already retweeted by the user
+  const isAlreadyRetweeted = tweet.retweets.find(
+    (retweeter) => retweeter.toString() === user._id.toString()
+  )
+
+  // if already retweeted, operation was suppose to be remove retweet, else perform retweet
+  if (isAlreadyRetweeted) {
+    tweet.retweets = tweet.retweets.filter(
+      (retweeter) => retweeter.toString() !== user._id.toString()
+    )
+  } else {
+    tweet.retweets = tweet.retweets.concat(user._id)
+  }
+
+  await tweet.save()
+
+  response.json(tweet)
+})
+
 module.exports = tweetsRouter
