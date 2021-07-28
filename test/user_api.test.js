@@ -9,7 +9,7 @@ const api = supertest(app)
 beforeEach(async () => {
   await User.deleteMany({})
   await User.insertMany(helper.initialUsers)
-})
+}, 100000)
 
 describe('when there are some users initially saved', () => {
   test('users are returned as json', async () => {
