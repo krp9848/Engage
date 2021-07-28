@@ -17,3 +17,13 @@ jobs:
         run: npm install
       - name: lint
         run: npm run lint
+      - name: heroku deployment
+        if: ${{ github.event_name == 'push' }}
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: 'viewengage'
+          heroku_email: 'kabirajpant@gmail.com'
+          healthcheck: 'https://viewengage.herokuapp.com/health'
+          checkstring: 'ok'
+          rollbackonhealthcheckfailed: true
