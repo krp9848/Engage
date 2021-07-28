@@ -29,7 +29,6 @@ tweetsRouter.get('/:id', async (request, response) => {
 tweetsRouter.post('/', getUserFrom, async (request, response) => {
   const body = request.body
   const user = request.user
-  console.log(user)
   const newTweet = new Tweet({
     text: body.text,
     tweetedAt: new Date(),
